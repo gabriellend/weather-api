@@ -13,15 +13,15 @@ async function get3DayForecast(location) {
       }
   );
   if (!response.ok) {
-      const { error } = await response.json();
-      throw new Error(`${error.code}: ${error.message}`);
+      const error = await response.json();
+      throw error;
   }
 
   const data = await response.json();
   const filteredData = filterData(data);
   return filteredData;
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    return error;
   }
 }
 
@@ -73,6 +73,10 @@ async function handleLocationSearch(e) {
   const input = document.querySelector("#location");
   const location = input.value;
   const forecast = await get3DayForecast(location);
+  if (forecast.error) {
+    console.log(forecast.error);
+    return;
+  }
 
   displayForecast(forecast);
 }
