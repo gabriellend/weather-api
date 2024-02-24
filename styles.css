@@ -1,0 +1,31 @@
+#location-label {
+  position: absolute;
+  clip-path: inset(50%);
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  white-space: nowrap;
+}
+
+#forecast {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+#locationName {
+  flex: 1;
+}
+
+#forecastInfo {
+  flex: 1;
+  display: flex;
+}
+
+.day {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
