@@ -5,17 +5,24 @@ const forecastDisplayArea = document.querySelector("#forecast");
 const form = document.querySelector("form");
 
 async function get3DayForecast(location) {
+  try {
   const response = await fetch(
-    `${BASE_URL}/forecast.json?key=${API_KEY}&q=${location}&days=3`
+      `${BASE_URL}/forecast.json?key=${API_KEY}&q=${location}&days=3`,
+      {
+        mode: "cors",
+      }
   );
   if (!response.ok) {
-    console.error("Failed to fetch data:", response.statusText);
-    return;
+      const { error } = await response.json();
+      throw new Error(`${error.code}: ${error.message}`);
   }
 
   const data = await response.json();
   const filteredData = filterData(data);
   return filteredData;
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 function filterData(data) {
