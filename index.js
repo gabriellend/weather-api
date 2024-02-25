@@ -18,8 +18,8 @@ async function get3DayForecast(location) {
     }
 
     const data = await response.json();
-    const filteredData = filterData(data);
-    return filteredData;
+    const filteredForecastData = filterData(data);
+    return filteredForecastData;
   } catch (error) {
     return error;
   }
@@ -100,6 +100,7 @@ function createElement(elem, options) {
 }
 
 function displayForecast(forecastData) {
+  // Clear the last forecast
   forecastDisplayArea.innerHTML = "";
 
   const locationName = createElement("h2", {
@@ -108,7 +109,7 @@ function displayForecast(forecastData) {
   });
   const forecastInfo = createElement("div", { id: "forecastInfo" });
 
-  forecastData.forecast.forEach((day) => {
+  const dayElements = forecastData.forecast.map((day) => {
     const dayInfo = createElement("div", { className: "day" });
 
     const date = createElement("h3", { innerText: day.date });
@@ -118,11 +119,15 @@ function displayForecast(forecastData) {
     const condition = createElement("p", { innerText: day.condition });
 
     dayInfo.append(date, high, low, icon, condition);
-    forecastInfo.append(dayInfo);
+
+    return dayInfo;
   });
 
+  // Show radio buttons when we have a forecast
   const radioBtns = document.querySelector("#radio");
   radioBtns.style.display = "block";
+
+  forecastInfo.append(...dayElements);
   forecastDisplayArea.append(locationName, forecastInfo);
 }
 
