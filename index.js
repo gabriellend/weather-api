@@ -6,20 +6,20 @@ const form = document.querySelector("form");
 
 async function get3DayForecast(location) {
   try {
-  const response = await fetch(
+    const response = await fetch(
       `${BASE_URL}/forecast.json?key=${API_KEY}&q=${location}&days=3`,
       {
         mode: "cors",
       }
-  );
-  if (!response.ok) {
+    );
+    if (!response.ok) {
       const error = await response.json();
       throw error;
-  }
+    }
 
-  const data = await response.json();
-  const filteredData = filterData(data);
-  return filteredData;
+    const data = await response.json();
+    const filteredData = filterData(data);
+    return filteredData;
   } catch (error) {
     return error;
   }
@@ -27,15 +27,8 @@ async function get3DayForecast(location) {
 
 function filterData(data) {
   const { name, region } = data.location;
-  const filteredData = {
-    location: {
-      name,
-      region,
-    },
-    forecast: [],
-  };
 
-  data.forecast.forecastday.forEach((day) => {
+  const forecast = data.forecast.forecastday.map((day) => {
     const dayObj = {
       date: formatDate(day.date),
       high: {
@@ -49,11 +42,16 @@ function filterData(data) {
       condition: day.day.condition.text,
       icon: day.day.condition.icon,
     };
-
-    filteredData.forecast.push(dayObj);
+    return dayObj;
   });
 
-  return filteredData;
+  return {
+    location: {
+      name,
+      region,
+    },
+    forecast,
+  };
 }
 
 function formatDate(date) {
