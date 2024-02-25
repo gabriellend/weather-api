@@ -1,5 +1,5 @@
 import { get3DayForecast } from "./api.js";
-import { displayForecast } from "./ui.js";
+import { displayForecast, displayCelcius, displayFarenheit } from "./ui.js";
 
 export async function handleLocationSearch(e) {
   e.preventDefault();
@@ -14,4 +14,16 @@ export async function handleLocationSearch(e) {
   }
 
   displayForecast(forecast);
+}
+
+export function handleTempConverstion(e) {
+  const unit = e.target.value;
+  switch (unit) {
+    case "farenheit":
+      displayFarenheit();
+      break;
+    case "celcius":
+      displayCelcius();
+      break;
+  }
 }

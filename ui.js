@@ -1,5 +1,25 @@
+import { convertTemp, stripSuffix, formatTemp } from "./utils.js";
+
 const forecastDisplayArea = document.querySelector("#forecast");
-const radioBtns = document.querySelector("#radio");
+const radioBtnsDiv = document.querySelector("#radioDiv");
+
+export function displayCelcius() {
+  const temps = document.querySelectorAll(".temp");
+  temps.forEach((temp) => {
+    const tempNum = stripSuffix(temp.innerText);
+    const convertedTemp = convertTemp(tempNum, "F");
+    temp.innerText = formatTemp(convertedTemp, "°C");
+  });
+}
+
+export function displayFarenheit() {
+  const temps = document.querySelectorAll(".temp");
+  temps.forEach((temp) => {
+    const tempNum = stripSuffix(temp.innerText);
+    const convertedTemp = convertTemp(tempNum, "C");
+    temp.innerText = formatTemp(convertedTemp, "°F");
+  });
+}
 
 export function displayForecast(forecastData) {
   // Clear the last forecast
@@ -15,8 +35,14 @@ export function displayForecast(forecastData) {
     const dayInfo = createElement("div", { className: "day" });
 
     const date = createElement("h3", { innerText: day.date });
-    const high = createElement("h4", { innerText: day.high.farenheit });
-    const low = createElement("h4", { innerText: day.low.farenheit });
+    const high = createElement("h4", {
+      innerText: day.high,
+      className: "temp",
+    });
+    const low = createElement("h4", {
+      innerText: day.low,
+      className: "temp",
+    });
     const icon = createElement("img", { src: `https://${day.icon}` });
     const condition = createElement("p", { innerText: day.condition });
 
@@ -26,7 +52,7 @@ export function displayForecast(forecastData) {
   });
 
   // Show radio buttons when we have a forecast
-  radioBtns.style.display = "block";
+  radioBtnsDiv.style.display = "block";
 
   forecastInfo.append(...dayElements);
   forecastDisplayArea.append(locationName, forecastInfo);
