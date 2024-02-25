@@ -80,30 +80,44 @@ async function handleLocationSearch(e) {
 
   displayForecast(forecast);
 }
+
+function createElement(elem, options) {
+  const element = document.createElement(elem);
+  const { innerText, className, id, src } = options;
+
+  if (innerText) {
+    elem.innerText = innerText;
+  }
+  if (className) {
+    elem.classList.add(className);
+  }
+  if (id) {
+    elem.id = id;
+  }
+  if (src) {
+    elem.src = src;
+  }
+
+  return element;
+}
+
 function displayForecast(forecastData) {
   forecastDisplayArea.innerHTML = "";
 
-  const locationName = document.createElement("h2");
-  locationName.innerText = `${forecastData.location.name}, ${forecastData.location.region}`;
-  locationName.id = "locationName";
-
-  const forecastInfo = document.createElement("div");
-  forecastInfo.id = "forecastInfo";
+  const locationName = createElement("h2", {
+    innerText: `${forecastData.location.name}, ${forecastData.location.region}`,
+    id: "locationName",
+  });
+  const forecastInfo = createElement("div", { id: "forecastInfo" });
 
   forecastData.forecast.forEach((day) => {
-    const dayInfo = document.createElement("div");
-    dayInfo.classList.add("day");
+    const dayInfo = createElement("div", { className: "day" });
 
-    const date = document.createElement("h3");
-    date.innerText = day.date;
-    const high = document.createElement("h4");
-    high.innerText = day.high.farenheit;
-    const low = document.createElement("h4");
-    low.innerText = day.low.farenheit;
-    const icon = new Image();
-    icon.src = `https://${day.icon}`;
-    const condition = document.createElement("p");
-    condition.innerText = day.condition;
+    const date = createElement("h3", { innerText: day.date });
+    const high = createElement("h4", { innerText: day.high.farenheit });
+    const low = createElement("h4", { innerText: day.low.farenheit });
+    const icon = createElement("img", { src: `https://${day.icon}` });
+    const condition = createElement("p", { innerText: day.condition });
 
     dayInfo.append(date, high, low, icon, condition);
     forecastInfo.append(dayInfo);
