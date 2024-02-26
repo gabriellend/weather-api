@@ -58,6 +58,14 @@ export function displayForecast(forecastData) {
   forecastDisplayArea.append(locationName, forecastInfo);
 }
 
+export function showLoadingOverlay() {
+  document.getElementById("loading-overlay").style.display = "block";
+}
+
+export function hideLoadingOverlay() {
+  document.getElementById("loading-overlay").style.display = "none";
+}
+
 function createElement(elem, options) {
   const element = document.createElement(elem);
   const { innerText, className, id, src } = options;
